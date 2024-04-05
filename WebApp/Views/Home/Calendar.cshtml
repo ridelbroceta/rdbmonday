@@ -1,0 +1,134 @@
+﻿@model RequestCalendarInfoViewModel
+@{
+    ViewData["Title"] = "Calendar Page";
+
+    var priorities = new List<SelectListItem>
+    {
+        new SelectListItem {Text = "ISS-Chip Urbach Conference Room", Value = "ISS-ChipUrbachConRm@pbc.gov"},
+        new SelectListItem {Text = "ISS Video Conferencing Calendar", Value = "ISS-Video@pbc.gov"},
+        new SelectListItem {Text = "CAD-CaseConf CAD-CaseConf", Value = "CCADCaseConf@pbcgov.org"},
+         new SelectListItem {Text = "4PTS-2S-106N Conf", Value = "4PTS-2S-106N-Conf@pbcgov.org"}
+    };
+}
+<section>
+    <form id="calendar_form">
+         <div asp-validation-summary="All" class="text-danger" style="display: none;"></div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Location" class="control-label"></label>
+                    <select class="form-control my-field" asp-for="Location" asp-items="@priorities">
+                        <option value="">---Please Select---</option>
+                    </select>
+                    <span asp-validation-for="Location" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Month" class="control-label"></label>
+                    <input asp-for="Month" class="form-control my-field" type="month"  style="width: 200px;"/>
+                    <span asp-validation-for="Month" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" id="submit">Submit</button>
+                </div>
+            </div>
+        </div>
+
+    </form>     
+
+    <br />
+    <div id='calendar'></div>
+        
+</section>
+
+
+@section Scripts {
+
+        <partial name="_ValidationScriptsPartial" />
+
+        <script src="~/lib/fullcalendar/index.global.min.js"></script>
+
+<script>
+
+    var calendarEl;
+    var calendar;
+
+    var headerJSON = {
+    left: 'title',
+    center: '',
+    right: '' // view buttons on large screens
+  };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        calendarEl = document.getElementById('calendar');
+        calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: headerJSON,
+        });
+        calendar.render();
+    });
+
+    $(document).ready(function () {
+
+        console.log("ready!");
+
+        let $form = $('#calendar_form');
+
+        $form.find('#submit').on('click', (e) => {
+
+            if ($form.valid()) {
+
+                var listEvent = calendar.getEvents();
+                listEvent.forEach(event => {
+                    event.remove()
+                });
+
+                let data = new FormData($form.get(0));
+
+                $.ajax({
+                    url: `@Url.Action("GetAppoiments", "Home", new { Area = "" })`,
+                    type: "POST",
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    success: (response) => {
+                        // debugger;
+                        if (response.success) {
+                            // debugger;
+                            let events = response.value;
+
+                            for (let i = 0; i < events.length; ++i) {
+                                    calendar.addEvent({
+                                        title: events[i].subject,
+                                        start: events[i].start,
+                                        end: events[i].end
+                                    });
+                            }
+
+                            calendar.gotoDate($form.find('#Month').val());
+
+                        } else {
+                            alert(response.errorMessage);
+                        };
+                    },
+                    error: function (jqXHR, textStatus, error) {
+
+                    }
+                });
+            }
+            // $button.prop('disabled', false);
+        }); // btn submit click
+
+    }); //end doc ready
+
+</script>
+
+}
