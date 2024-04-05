@@ -1,0 +1,302 @@
+﻿@model ItemM
+
+@{
+    ViewData["Title"] = "Home Page";
+
+    var priorities = new List<SelectListItem>
+    {
+        new SelectListItem {Text = "Urgent", Value = "Urgent"},
+        new SelectListItem {Text = "High", Value = "High"},
+        new SelectListItem {Text = "Medium", Value = "Medium"}
+    };
+
+    var prjTypes = new List<SelectListItem>
+    {
+        new SelectListItem {Text = "Platform", Value = "Platform"},
+        new SelectListItem {Text = "Network", Value = "Network"},
+        new SelectListItem {Text = "Apps", Value = "Apps"}
+    };
+
+    var list = new List<SelectListItem>
+    {
+        new SelectListItem {Text = "Urgent", Value = "1"},
+        new SelectListItem {Text = "High", Value = "2"},
+        new SelectListItem {Text = "Medium", Value = "3"},
+        new SelectListItem {Text = "Pepe", Value = "4"},
+        new SelectListItem {Text = "Juan", Value = "5"},
+        new SelectListItem {Text = "Ramiro", Value = "6"}
+    };
+
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+
+<section x-data="{
+        testType: '@((Model != null) && Model.TestType.HasValue ? Model.TestType.ToString() : string.Empty)'
+        }">
+    <form id="item_form">
+         <div asp-validation-summary="All" class="text-danger" style="display: none;"></div>
+        
+         <span x-text="testType"></span>
+         <div class="row">
+             <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="ProjectName" class="control-label"></label>
+                            <input asp-for="ProjectName" class="form-control my-field" />
+                            <span asp-validation-for="ProjectName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="ExecutiveSummary" class="control-label"></label>
+                            <input asp-for="ExecutiveSummary" class="form-control my-field" />
+                            <span asp-validation-for="ExecutiveSummary" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="Priority" class="control-label"></label>
+                            <select class="form-control my-field" asp-for="Priority" asp-items="@priorities">
+                                <option>---Please Select---</option>
+                            </select>
+                            <span asp-validation-for="Priority" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="ProjectType" class="control-label"></label>
+                            <select class="form-control my-field" asp-for="ProjectType" asp-items="@prjTypes">
+                                <option>---Please Select---</option>
+                            </select>
+                            <span asp-validation-for="ProjectType" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="StrategicAlignment" class="control-label"></label>
+                            <input asp-for="StrategicAlignment" class="form-control my-field" />
+                            <span asp-validation-for="StrategicAlignment" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="CustomerBenefit" class="control-label"></label>
+                            <input asp-for="CustomerBenefit" class="form-control my-field" />
+                            <span asp-validation-for="CustomerBenefit" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="CommercialBenefit" class="control-label"></label>
+                            <input asp-for="CommercialBenefit" class="form-control my-field" />
+                            <span asp-validation-for="CommercialBenefit" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="TechnicalBenefit" class="control-label"></label>
+                            <input asp-for="TechnicalBenefit" class="form-control my-field" />
+                            <span asp-validation-for="TechnicalBenefit" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="TestType" class="control-label"></label>
+                            <select class="form-control my-field" asp-for="TestType" asp-items="@list"
+                              x-model="testType" >
+                                <option>---Please Select---</option>
+                            </select>
+                            <span asp-validation-for="TestType" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="MyDate" class="control-label"></label>
+                            <input name="MyDate" class="form-control" type="date" />
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" id="submit">Submit</button>
+                            <button type="button" class="btn btn-primary" id="test">Test</button>
+
+                            <button type="button" class="btn btn-primary" id="calendar">Calendar</button>
+                        </div>
+                    </div>
+                </div>
+             </div>
+            <div class="col-md-6">
+                <textarea id="result" rows="20" style="width:100%;"></textarea>
+            </div>
+        </div>
+    </form>
+</section>
+
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        async function save($form, $result) {
+            // new Tools.BlockUi();
+
+            await fetch(`@Url.Action("TestSave", "Home", new { Area = "" })`, {
+                method: 'POST',
+                headers: {
+                    // 'Content-Type': 'application/json',
+                },
+                body: new FormData($form.get(0)),
+            })
+                .then((res) => {
+
+                    return res.json();
+                })
+                .then((data) => {
+                   
+                    if (data.success) {
+                        $('#result').val(data.value);
+                    } else {
+                        alert(data.errorMessage);
+                    };
+
+                });
+            // $.unblockUI;
+        }
+
+
+        window.onload = () => {
+
+            $(document).ajaxStart(() => {
+                new Tools.BlockUi();
+            }).ajaxStop($.unblockUI);
+   
+
+        };
+
+        $(document).ready(function () {
+        
+            console.log("ready!");
+
+
+            let $form = $('#item_form');
+            let $result = $('#result');
+
+            // $form.find('#TestType').select2();
+
+            $('#submit').on('click', (e) => {
+
+                // let $button = $(e.target);
+
+                // $button.prop('disabled', true);
+
+                $result.val('');
+
+                // debugger;
+                if ($form.valid()) {
+
+                    let data = new FormData($form.get(0));
+
+                    $.ajax({
+                        url: `@Url.Action("Save", "Home", new { Area = "" })`,
+                        type: "POST",
+                        data: data,
+                        contentType: false,
+                        processData: false,
+                        cache: false,
+                        success: (response) => {
+                            if (response.success) {
+
+                                $form.find('.my-field').val('');
+                                $result.val(response.value);
+
+                            } else {
+                                alert(response.errorMessage);
+                            };
+                        },
+                        error: function (jqXHR, textStatus, error) {
+                          
+                        }
+                    });
+                }
+                // $button.prop('disabled', false);
+            }); // btn submit click
+
+            $('#test').on('click', (e) => {
+
+                // debugger;
+
+                // $.cookie('googtrans', '/es/f');
+
+                // let selectElement = $('#google_translate_element').find('select')[0];
+
+                // selectElement.value = 'es';
+
+                //  selectElement.dispatchEvent(new Event('change'));
+
+                //MyJsGlobalObject.googleT.o = 'es';
+
+                //save($form, $result);
+
+            });
+
+           $('#calendar').on('click', (e) => {
+
+                 fetch(`@Url.Action("GetExchangeAppointments", "Home", new { Area = "" })`, {
+                    method: 'POST',
+                    headers: {
+                        // 'Content-Type': 'application/json',
+                    },
+                    // body: new FormData($form.get(0)),
+                })
+                .then((res) => {
+
+                    return res.json();
+                })
+                .then((data) => {
+                   
+                    if (data.success) {
+                        $('#result').val(data.value);
+                    } else {
+                        alert(data.errorMessage);
+                    };
+
+                });
+
+            });
+
+        });//end doc ready
+    </script>
+}
