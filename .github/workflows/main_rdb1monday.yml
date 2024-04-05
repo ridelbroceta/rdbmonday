@@ -61,6 +61,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'rdb1monday'
-          slot-name: 'Production'
+          slot-name: 'rdb1monday-main-slot'
           package: .
           
